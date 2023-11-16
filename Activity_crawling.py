@@ -1,18 +1,18 @@
+
 from selenium import webdriver
 from selenium.common import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
 
 import time
 import json
 
+from selenium.webdriver.support.wait import WebDriverWait
+
 url = "https://kr.trip.com/things-to-do/ttd-home/?districtId=234&ctm_ref=vactang_page_23810&locale=ko-KR&curr=KRW"
 activity_place_keyword = input("액티비티 여행지")
-# hotel_destination_keyword = input("숙박 도착 장소")
-# start_day = input("체크인(비행기 가는 편) 날짜(아직 해당 달의 날짜만 선택 가능)")
-# end_day = input("체크아웃(비행기 오는 편) 날짜(아직 해당 달의 날짜만 선택 가능)")
+
 # ChromeOptions 객체 생성
 options = Options()
 
@@ -64,8 +64,8 @@ activity_place_input_search_btn.click()
 #     attractions_names = [attraction.text for attraction in attractions]
 #
 #     # 추출된 텍스트 출력
-#     for attraction_name in attractions_names:
-#         print(attraction_name)
+#     # for attraction_name in attractions_names:
+#     #     print(attraction_name)
 #
 # except TimeoutException:
 #     # 어트랙션 요소 찾기
@@ -75,9 +75,9 @@ activity_place_input_search_btn.click()
 #     # 각 요소의 텍스트 추출
 #     attractions_names = [attraction.text for attraction in attractions]
 #
-#     # 추출된 텍스트 출력
-#     for attraction_name in attractions_names:
-#         print(attraction_name)
+# #     # 추출된 텍스트 출력
+# #     for attraction_name in attractions_names:
+# #         print(attraction_name)
 
 
 attraction_more_buttons = driver.find_elements(By.CSS_SELECTOR, "#ibuact-10650012671-filter-add-294-0-more")
@@ -86,13 +86,25 @@ if attraction_more_buttons:
     attraction_more_buttons[0].click()
     time.sleep(0.3)  # 페이지가 업데이트 될 시간을 기다립니다.
 
-# 어트랙션 요소 찾기
-attractions_section = driver.find_element(By.XPATH, "//div[contains(text(), '어트랙션')]/ancestor::div[contains(@class, 'filter-container')]")
-attractions = attractions_section.find_elements(By.CLASS_NAME, "filter-select-name")
+    # 어트랙션 요소 찾기
+    attractions_section = driver.find_element(By.XPATH,
+                                              "//div[contains(text(), '어트랙션')]/ancestor::div[contains(@class, 'filter-container')]")
+    attractions = attractions_section.find_elements(By.CLASS_NAME, "filter-select-name")
+
+else:
+    # 어트랙션 요소 찾기
+    attractions_section = driver.find_element(By.XPATH, "//div[contains(text(), '어트랙션')]/ancestor::div[contains(@class, 'filter-container')]")
+    attractions = attractions_section.find_elements(By.CLASS_NAME, "filter-select-name")
 
 # 각 요소의 텍스트 추출
 attractions_names = [attraction.text for attraction in attractions]
 
 # 추출된 텍스트 출력
 for attraction_name in attractions_names:
-    print(attraction_name)
+    attracion_json_output = json.dumps(attractions_names, ensure_ascii=False, indent=4)
+
+# attractions_names 리스트를 JSON 형식의 문자열로 변환
+
+
+# JSON 문자열 출력
+print(attracion_json_output)
